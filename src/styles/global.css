@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: 'Diamonda';
+    font-weight: 100 900;
+    font-display: swap;
+    font-style: normal;
+    font-named-instance: 'Regular';
+    src: url(/fonts/SVN-Diamonda.otf) format("opentype");
+  }
+@font-face {
+    font-family: 'TheSecret';
+    font-weight: 100 900;
+    font-display: swap;
+    font-style: normal;
+    font-named-instance: 'Regular';
+    src: url(/fonts/SVN-TheSecret.ttf) format("truetype");
+  }
