@@ -7,6 +7,11 @@ module.exports = {
     `./src/components/**/*.{js,jsx,ts,tsx}`,
   ],
   theme: {
+    fontFamily: {
+      'sec': 'TheSecret, -apple-system, Roboto, sans-serif, serif',
+      'diamond': 'Diamonda, -apple-system, Roboto, sans-serif, serif',
+      'hand': 'Authoritative, -apple-system, Roboto, sans-serif, serif'
+    },
     extend: {
       animation: {
         "meteor-effect": "meteor 5s linear infinite",

@@ -18,3 +18,11 @@
     font-named-instance: 'Regular';
     src: url(/fonts/SVN-TheSecret.ttf) format("truetype");
   }
+@font-face {
+    font-family: 'Authoritative';
+    font-weight: 100 900;
+    font-display: swap;
+    font-style: normal;
+    font-named-instance: 'Regular';
+    src: url(/fonts/SVN-Authoritative.otf) format("opentype");
+  }

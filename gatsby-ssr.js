@@ -6,17 +6,19 @@ export const onRenderBody = ({ setHeadComponents }) => {
       rel="preload"
       href="/fonts/SVN-Diamonda.otf"
       as="font"
-    //   type="font/otf"
       crossOrigin="anonymous"
-    //   key="interFont"
     />,
     <link
       rel="preload"
       href="/fonts/SVN-TheSecret.ttf"
       as="font"
-    //   type="font/otf"
       crossOrigin="anonymous"
-    //   key="interFont"
+    />,
+    <link
+      rel="preload"
+      href="/fonts/SVN-Authoritative.otf"
+      as="font"
+      crossOrigin="anonymous"
     />,
   ])
 }

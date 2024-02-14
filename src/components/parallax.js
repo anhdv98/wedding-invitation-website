@@ -11,6 +11,8 @@ import {
 
 export const Parallax = ({
   products,
+  isAnchorDate,
+  isDark
 }) => {
   const firstRow = products.slice(0, 5);
   const secondRow = products.slice(5, 10);
@@ -50,9 +52,9 @@ export const Parallax = ({
   return (
     <div
       ref={ref}
-      className="h-[300vh] py-40 overflow-hidden  antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
+      className="min-h-[330vh] md:min-h-[200vh] 2xl:min-h-[210vh] pb-30 pt-40 md:pt-10 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
     >
-      <Header />
+      <Header isAnchorDate={isAnchorDate} isDark={isDark} />
       <motion.div
         style={{
           rotateX,
@@ -94,17 +96,20 @@ export const Parallax = ({
   );
 };
 
-export const Header = () => {
+export const Header = ({ isAnchorDate, isDark }) => {
   return (
-    <div className="max-w-7xl relative mx-auto py-20 md:py-40 px-4 w-full  left-0 top-0">
-      <h1 className="text-2xl md:text-7xl font-bold dark:text-white">
-        The Ultimate <br /> development studio
+    <div id="hero" className="max-w-7xl relative mx-auto py-20 md:py-20 px-4 w-full  left-0 top-0">
+      <h1 className="font-sec text-6xl md:text-8xl lg:text-9xl font-bold dark:text-white">
+        Nhật Thành <br /> <span style={{ color: "#D63484" }}>&</span> Hoàng Hiên
       </h1>
-      <p className="max-w-2xl text-base md:text-xl mt-8 dark:text-neutral-200">
-        We build beautiful products with the latest technologies and frameworks.
-        We are a team of passionate developers and designers that love to build
-        amazing products.
+      <p className="opacity-75 font-hand text-2xl max-w-5xl md:text-4xl mt-8 dark:text-neutral-200">
+        Bắt đầu từ hôm nay chúng ta sẽ viết nên một chương mới của cuộc đời.<br /> Bằng tình thương yêu và hạnh phúc đong đầy.
       </p>
+      {/* <div className="static">
+        <div className={`transition-all mt-20 pt-20 duration-300 font-hand z-50 text-center inset-x-0 bottom-2 md:bottom-20 text-4xl md:text-5xl${isDark ? ' text-white' : ''}${isAnchorDate ? ' opacity-0' : ' opacity-90'}`}>
+          25/02/2025 (16/01 Âm lịch)
+        </div>
+      </div> */}
     </div>
   );
 };
@@ -113,13 +118,21 @@ export const ProductCard = ({
   product,
   translate,
 }) => {
+  function randomNumberInRange(min, max) {
+    // 👇️ get number between min (inclusive) and max (inclusive)
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
   return (
     <motion.div
+      initial={{
+        rotate: 0
+      }}
       style={{
         x: translate,
       }}
       whileHover={{
         y: -20,
+        rotate: randomNumberInRange(-6, 6)
       }}
       key={product.title}
       className="group/product h-96 w-[30rem] relative flex-shrink-0"
@@ -136,7 +149,7 @@ export const ProductCard = ({
           alt={product.title}
         />
       </a>
-      <div className="absolute inset-0 h-full w-full opacity-0 group-hover/product:opacity-80 bg-black pointer-events-none"></div>
+      {/* <div className="absolute inset-0 h-full w-full opacity-0 group-hover/product:opacity-80 bg-black pointer-events-none"></div> */}
       <h2 className="absolute bottom-4 left-4 opacity-0 group-hover/product:opacity-100 text-white">
         {product.title}
       </h2>
