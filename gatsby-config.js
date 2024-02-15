@@ -3,8 +3,11 @@
  */
 module.exports = {
   siteMetadata: {
-    title: `an-wedding`,
-    siteUrl: `https://www.yourdomain.tld`
+    title: `Thành - Hiên 's Wedding`,
+    description: `Mời mọi người đến dự lễ cưới của chúng tôi`,
+    twitterUsername: `@gatsbyjs`,
+    image: `src/images/meta-bg.png`,
+    siteUrl: `http://www.thanhhien.lovestoblog.com`
   },
   plugins: ["gatsby-plugin-postcss", "gatsby-plugin-image", {
     resolve: 'gatsby-plugin-manifest',

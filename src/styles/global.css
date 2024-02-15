@@ -285,3 +285,36 @@ a#location:hover {
   border-style: solid;
   border-color: transparent transparent transparent rgb(249, 241, 246);
 }
+
+.couple-bg {
+  /* background: url("/images/round-frame.png") center center/cover no-repeat local; */
+    /* width: 511px; */
+    /* height: 470px; */
+    margin: 0 auto;
+    position: relative;
+}
+
+.couple-bg img {
+  max-width: 60%;
+  border-radius: 50%;
+  position: absolute;
+  left: 44%;
+  top: 44%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.couple-bg img.frame{
+  max-width: 75%;
+}
+
+.footer-style {
+  background: url("/images/footer-shape.png") center bottom/100% no-repeat local;
+  text-align: center;
+  height: 100vh;
+  min-height: 900px;
+  position: relative;
+}

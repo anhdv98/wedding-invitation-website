@@ -1,34 +1,33 @@
 import * as React from "react"
 import { useEffect, useState } from "react"
 import { Parallax } from "../components/parallax"
-// import { BackgroundBeams } from "../components/beams"
-// import { Meteors } from "../components/meteor"
-// import { googleFormsToJson } from 'react-google-forms-hooks'
-// import FormfacadeEmbed from "@formfacade/embed-react";
+
 import axios from "axios";
 
 
-const headStyles = {
-  color: "#232129",
-  fontSize: "7rem",
-  fontFamily: "TheSecret, -apple-system, Roboto, sans-serif, serif",
+const parentSectionStyles = {
+  backgroundImage: "url(" + 'images/5.jpg' + ")",
+  backgroundRepeat: "no-repeat",
+  backgroundAttachment: "fixed",
+  backgroundPosition: "center",
+  backgroundSize: "contain",
+  height: "60vh"
 }
 
-// const form = await googleFormsToJson(
-//   'https://forms.gle/JXJsAF5zgFVETYe97'
-// )
 
 const IndexPage = () => {
 
   const [isDark, setIsDark] = useState(true)
   const [isAnchorDate, setIsAnchorDate] = useState(false)
   const [countInterval, setCountInterval] = useState(0)
+  const [musicState, setMusicState] = useState(false)
   const [count, setCount] = useState({
     seconds: null,
     minutes: null,
     hours: null,
     days: null
   })
+  const [responsed, setResponsed] = useState(typeof window !== 'undefined' ? localStorage.getItem('responsed') === 'true' : false)
   const [responseSubmit, setResponseSubmit] = useState({
     name: '',
     come: 'yes',
@@ -42,6 +41,26 @@ const IndexPage = () => {
     fontFamily: "Comfortaa, -apple-system, Roboto, sans-serif, serif",
     // fontFamily: "Diamonda",
   })
+
+  const playMusic = () => {
+    let musicEl = document.getElementById('backgroundMusic');
+    setMusicState(true)
+    musicEl.play()
+  }
+
+  const pauseMusic = () => {
+    let musicEl = document.getElementById('backgroundMusic');
+    setMusicState(false)
+    musicEl.pause()
+  }
+
+  const toggleMusic = () => {
+    if (musicState) {
+      pauseMusic()
+    } else {
+      playMusic()
+    }
+  }
 
   const handleScrollDark = () => {
     let beamEl = document.getElementById("hero")
@@ -110,9 +129,19 @@ const IndexPage = () => {
     e.preventDefault();
     e.stopPropagation();
     console.log(responseSubmit)
-    axios.post('https://sheet.best/api/sheets/dc9cd244-df44-4f4d-83ba-9a2fee878154', responseSubmit)
+    setResponsed(true)
+    typeof window !== 'undefined' && localStorage.setItem('responsed', 'true')
+    axios.post('https://sheet.best/api/sheets/dc9cd244-df44-4f4d-83ba-9a2fee878154', {
+      'Tên': responseSubmit.name,
+      'Có tới không?': responseSubmit.come === 'yes' ? 'có' : responseSubmit.come === 'no' ? 'không' : 'chưa chắc chắn',
+      'Lời chúc': responseSubmit.wish
+    })
       .then(response => {
         console.log("response: ", response);
+      }).catch(e => {
+        console.log(e);
+        setResponsed(false)
+        typeof window !== 'undefined' && localStorage.setItem('responsed', 'false')
       })
   }
 
@@ -124,6 +153,13 @@ const IndexPage = () => {
       updateCount()
     }, 1000);
     setCountInterval(interval)
+    let audioEl = document.getElementById("backgroundMusic");
+    audioEl.volume = 0.6
+    audioEl.play().then(() => { setMusicState(true) }).catch((error) => {
+      document.addEventListener('click', () => {
+        audioEl.play().then(() => { setMusicState(true) })
+      }, { once: true })
+    })
     return () => {
       window.removeEventListener("scroll", handleScrollDark);
       window.removeEventListener("scroll", handleScrollDate);
@@ -132,21 +168,24 @@ const IndexPage = () => {
   }, [])
 
 
+
+
   return (
     <main id="main" style={pageStyles}>
-      {/* <div className="relative">
-        <div className={`transitio duration-1000 fixed font-sec z-50 text-center md:text-right inset-x-0 bottom-2 md:right-5 md:top-5 text-4xl md:text-5xl ${isDark ? 'text-white' : ''}`}>
-          25/02/2024
-        </div>
-      </div> */}
+
       <div className="fixed bottom-5 right-5 " style={{ zIndex: 1000 }} >
-        <div className="cursor-pointer bg-pink-50 p-2 rounded-xl drop-shadow-lg tooltip" onClick={() => {
+        <div className="cursor-pointer bg-pink-50 p-2 rounded-xl drop-shadow-lg" onClick={() => { toggleMusic() }}>
+          <img src={musicState ? "images/music.png" : "images/musicpause.png"} className="w-10 h-10 opacity-55" />
+          <audio id="backgroundMusic" loop autoPlay>
+            <source src="audios/theme.weba" type="audio/webm" />
+          </audio>
+        </div>
+        <div className="cursor-pointer bg-pink-50 p-2 rounded-xl drop-shadow-lg  mt-3 tooltip" onClick={() => {
           var calendarView = document.getElementById("dateloc");
           calendarView?.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
         }}>
           <img src="images/calendar.png" className="w-10 h-10 opacity-70" />
           <span class="tooltiptext">Thời gian & Địa điểm</span>
-
         </div>
         <div className="cursor-pointer bg-pink-50 p-2 rounded-xl drop-shadow-lg mt-3 tooltip" onClick={() => {
           var calendarView = document.getElementById("qr");
@@ -157,14 +196,7 @@ const IndexPage = () => {
         </div>
       </div>
 
-
-
-      <div
-      //  className="px-0 lg:px-20"
-      >
-
-        {/* <p style={headStyles}>Nhật Thành - Hoàng Hiên 3</p> */}
-
+      <div>
         <Parallax isAnchorDate={isAnchorDate} isDark={isDark} products={[
           { thumbnail: 'images/1.jpg' },
           { thumbnail: 'images/2.jpg' },
@@ -183,7 +215,6 @@ const IndexPage = () => {
           { thumbnail: 'images/3.jpg' },
         ]} />
         <div id="date" className="static">
-          {/* <p>Static parent</p> */}
           <div className={`display-n pointer-events-none transition-all duration-300 font-hand fixed z-50 text-center inset-x-0 bottom-2 md:top-10 md:right-10 md:text-right text-4xl md:text-5xl${isDark ? ' text-white' : ''}${isAnchorDate ? ' opacity-0' : ' opacity-0 xs:opacity-90'}`}>
             25/02/2024 (16/01 Âm lịch)
           </div>
@@ -213,10 +244,16 @@ const IndexPage = () => {
                           <div>NĂM 2024</div>
                         </div>
                         <i className="text-xs 2xl:text-sm mt-3">(TỨC NGÀY 16 THÁNG 01 NĂM GIÁP THÌN)</i>
-                        <a id="location" href="https://maps.app.goo.gl/MxHNnT7JsGBeEaTS6" target="_blank" className="font-bold mt-5 block underline underline-offset-2 transition" style={{}}>
-                          <img src="images/location.gif" className="w-7 h-7 inline mb-2 mr-2 mix-blend-darken	" />
-                          NHÀ VĂN HÓA THÔN HẬU BỔNG
-                        </a>
+                        <div className="text-xs">
+                          <a id="location" href="https://maps.app.goo.gl/MxHNnT7JsGBeEaTS6" target="_blank" className="font-bold mt-5 block underline underline-offset-2 transition" style={{}}>
+                            <img src="images/location.gif" className="w-7 h-7 inline mb-2 mr-2 mix-blend-darken	" />
+                            NHÀ TRAI: Nhà Văn hoá thôn Hậu Bổng
+                          </a>
+                          <a id="location" href="https://maps.app.goo.gl/WpsA9W9JifMM3KCS9" target="_blank" className="font-bold block underline underline-offset-2 transition" style={{}}>
+                            <img src="images/location.gif" className="w-7 h-7 inline mb-2 mr-2 mix-blend-darken	" />
+                            NHÀ GÁI: Đội 2, thôn Thị Đức, xã Nhật Tân
+                          </a>
+                        </div>
 
                         {/* <a href="#wishes" className="theme-btn">Gửi lời chúc</a> */}
                       </div>
@@ -272,86 +309,85 @@ const IndexPage = () => {
               </p>
             </div>
           </div>
-          {/* <div id="parent" className="grid grid-cols-2 gap-3 w-3/4">
-            <div>
-              <p className="text-center font-bold text-2xl">
-                Nhà trai
-              </p>
-              <div>
-                <span>Bố: </span>
-                <span>Phạm Trung</span>
-              </div>
-            </div>
-            <div>
-              <p className="text-center font-bold text-2xl">
-                Nhà gái
-              </p>
-              <div>
-                <span>Bố: </span>
-                <span>Phạm Trung</span>
-              </div>
-              <div>
-                <span>Mẹ: </span>
-                <span>Phạm Trung</span>
-              </div>
-            </div>
-          </div> */}
-          {/* <div id="form"> */}
-          {/* <iframe className="w-lvw md:w-[600px] h-[1000px] md:h-[900px]" src="https://docs.google.com/forms/d/e/1FAIpQLSc6nVtKnpD4-52OazeR9OPRNC1E2sIb9lbOU6rSKZvc9TSrgA/viewform?embedded=true" height="900" frameborder="0" marginheight="0" marginwidth="0">Đang tải…</iframe> */}
-          {/* <FormfacadeEmbed
-              className="w-lvw md:w-[600px] h-[1000px] md:h-[900px]"
-              formFacadeURL="https://formfacade.com/include/115214484711546581550/form/1FAIpQLSc6nVtKnpD4-52OazeR9OPRNC1E2sIb9lbOU6rSKZvc9TSrgA/classic.js/?div=ff-compose"
-
-              onSubmitForm={() => console.log('Form submitted')}
-
-            /> */}
-
-
-          {/* </div> */}
 
           <form className="grid grid-cols-1 p-5 md:p-0 w-full md:w-3/4 ">
-            <p className="font-hand my-5 text-4xl">Cảm Ơn Bạn Rất Nhiều Vì Đã Gửi Những Lời Chúc Mừng Tốt Đẹp Nhất Đến Đám Cưới Của Chúng Tôi!</p>
-            <div className="grid grid-cols-1 w-full bg-red-50 p-4 rounded-3xl gap-4">
-              <div>
-                <label className="font-semibold" for="name">Tên bạn là gì?</label>
-                <br />
-                <input className="p-2 border rounded-xl w-full my-2" type="text" id="name" name="name" placeholder="Nhập tên của bạn..." value={responseSubmit.name} onChange={(e) => setResponseSubmit({ ...responseSubmit, name: e.target.value })} />
-              </div>
-              <div>
-                <label className="font-semibold" for="come">Bạn có thể tham dự không?</label>
-                <br />
-                <div className="grid grid-cols-1 my-2">
-                  <div>
-                    <input className="mr-1" type="radio" id="yes" name="come" value="yes" onChange={(e) => setResponseSubmit({ ...responseSubmit, come: e.target.value })} />
-                    <label for="yes">Có, tôi chắc chắn sẽ tới</label>
+
+            {
+              !responsed ? (
+                <>
+                  <p className="font-hand my-5 text-4xl">Hãy cho chúng tôi biết bạn có thể tham gia cùng chúng tôi không? Đừng quên để lại những lời chúc mừng cho hạnh phúc của chúng tôi nhé!</p>
+                  <div className="grid grid-cols-1 w-full bg-red-50 p-4 rounded-3xl gap-4">
+                    <div>
+                      <label className="font-semibold" for="name">Tên bạn là gì?</label>
+                      <br />
+                      <input className="p-2 border rounded-xl w-full my-2" type="text" id="name" name="name" placeholder="Nhập tên của bạn..." value={responseSubmit.name} onChange={(e) => setResponseSubmit({ ...responseSubmit, name: e.target.value })} />
+                    </div>
+                    <div>
+                      <label className="font-semibold" for="come">Bạn có thể tham dự không?</label>
+                      <br />
+                      <div className="grid grid-cols-1 my-2">
+                        <div>
+                          <input className="mr-1" type="radio" id="yes" name="come" value="yes" onChange={(e) => setResponseSubmit({ ...responseSubmit, come: e.target.value })} />
+                          <label for="yes">Có, tôi chắc chắn sẽ tới</label>
+                        </div>
+
+                        <div>
+                          <input className="mr-1" type="radio" id="notsure" name="come" value="notsure" onChange={(e) => setResponseSubmit({ ...responseSubmit, come: e.target.value })} />
+                          <label for="notsure">Tôi chưa chắc chắn</label>
+                        </div>
+
+                        <div>
+                          <input className="mr-1" type="radio" id="no" name="come" value="no" onChange={(e) => setResponseSubmit({ ...responseSubmit, come: e.target.value })} />
+                          <label for="no">Rất tiếc, tôi không thể tham dự</label>
+                        </div>
+
+                      </div>
+                    </div>
+                    <div>
+                      <label className="font-semibold" for="wish">Lời chúc của bạn</label>
+                      <br />
+                      <textarea rows="4" className="p-2 border rounded-xl w-full my-2" type="text" id="wish" name="wish" placeholder="Hãy nhập lời chúc..." value={responseSubmit.wish} onChange={(e) => setResponseSubmit({ ...responseSubmit, wish: e.target.value })} />
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-red-100 border text-center cursor-pointer" onClick={submitHandler}>Gửi lời chúc phúc</div>
+
                   </div>
-
-                  <div>
-                    <input className="mr-1" type="radio" id="notsure" name="come" value="notsure" onChange={(e) => setResponseSubmit({ ...responseSubmit, come: e.target.value })} />
-                    <label for="notsure">Tôi chưa chắc chắn</label>
-                  </div>
-
-                  <div>
-                    <input className="mr-1" type="radio" id="no" name="come" value="no" onChange={(e) => setResponseSubmit({ ...responseSubmit, come: e.target.value })} />
-                    <label for="no">Rất tiếc, tôi không thể tham dự</label>
-                  </div>
-
-                </div>
-              </div>
-              <div>
-                <label className="font-semibold" for="wish">Lời chúc của bạn</label>
-                <br />
-                <textarea rows="4" className="p-2 border rounded-xl w-full my-2" type="text" id="wish" name="wish" placeholder="Hãy nhập lời chúc" value={responseSubmit.wish} onChange={(e) => setResponseSubmit({ ...responseSubmit, wish: e.target.value })} />
-              </div>
-
-              <div className="p-3 rounded-xl bg-red-100 border text-center" onClick={submitHandler}>Gửi lời chúc</div>
-
-            </div>
+                </>
+              ) : (
+                <>
+                  <p className="font-hand my-5 text-4xl">Cảm Ơn Bạn Rất Nhiều Vì Đã Gửi Những Lời Chúc Mừng Tốt Đẹp Nhất Đến Đám Cưới Của Chúng Tôi!</p>
+                  <div className="p-3 rounded-xl bg-red-100 border text-center cursor-pointer" onClick={() => {
+                    setResponsed(false)
+                  }}>Gửi lại lời chúc phúc</div>
+                </>
+              )
+            }
           </form>
 
         </div>
         {/* <BackgroundBeams id={"beam"} /> */}
+        <div style={parentSectionStyles}>
 
+        </div>
+        <div className="footer-style">
+          <div className="min-h-[30vh] grid grid-cols-2 text-sm md:text-lg place-items-center gap-4 w-full px-4 md:w-2/3 mx-auto">
+            <div>
+              <p className="border-b-2 mb-3">Nhà trai</p>
+              <p className="mb-1">Bố: PHẠM VĂN KÌN</p>
+              <p>Mẹ: PHẠM THỊ MAI THUỶ</p>
+            </div>
+            <div>
+              <p className="border-b-2 mb-3">Nhà gái</p>
+              <p className="mb-1">Bố: HOÀNG TRUNG KIÊN</p>
+              <p>Mẹ: MAI THU HIỀN</p>
+            </div>
+          </div>
+          <div className="couple-bg w-1/2 h-1/3 md:w-1/3 md:h-1/2">
+            <img className="pic" src="images/1-square.png" />
+            <img className="frame" src="images/round-frame.png" />
+          </div>
+          <p className="font-sec text-5xl md:text-7xl">Thank you!</p>
+        </div>
       </div>
 
     </main>
