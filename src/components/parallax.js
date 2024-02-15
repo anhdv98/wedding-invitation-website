@@ -52,7 +52,7 @@ export const Parallax = ({
   return (
     <div
       ref={ref}
-      className="min-h-[330vh] md:min-h-[200vh] 2xl:min-h-[210vh] pb-30 pt-40 md:pt-10 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
+      className="min-h-[330vh] md:min-h-[200vh] 2xl:min-h-[200vh] pb-30 pt-40 md:pt-10 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
     >
       <Header isAnchorDate={isAnchorDate} isDark={isDark} />
       <motion.div

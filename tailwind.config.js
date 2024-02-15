@@ -10,6 +10,7 @@ module.exports = {
     fontFamily: {
       'sec': 'TheSecret, -apple-system, Roboto, sans-serif, serif',
       'diamond': 'Diamonda, -apple-system, Roboto, sans-serif, serif',
+      'comfortaa': 'Comfortaa, -apple-system, Roboto, sans-serif, serif',
       'hand': 'Authoritative, -apple-system, Roboto, sans-serif, serif'
     },
     extend: {

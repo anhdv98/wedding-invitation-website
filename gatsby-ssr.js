@@ -20,5 +20,11 @@ export const onRenderBody = ({ setHeadComponents }) => {
       as="font"
       crossOrigin="anonymous"
     />,
+    <link
+      rel="preload"
+      href="/fonts/Comfortaa-VariableFont_wght.ttf"
+      as="font"
+      crossOrigin="anonymous"
+    />,
   ])
 }
