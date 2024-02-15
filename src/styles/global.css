@@ -256,7 +256,7 @@ a#location:hover {
 .tooltip .tooltiptext {
   visibility: hidden;
   width: 120px;
-  background-color: rgb(253 242 248);
+  background-color: rgb(249, 241, 246);
   color: #452647;
   text-align: center;
   padding: 5px 0;
@@ -283,5 +283,5 @@ a#location:hover {
   margin-top: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent transparent transparent rgb(253 242 248);
+  border-color: transparent transparent transparent rgb(249, 241, 246);
 }

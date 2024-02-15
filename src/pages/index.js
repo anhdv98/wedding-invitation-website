@@ -1,8 +1,12 @@
 import * as React from "react"
 import { useEffect, useState } from "react"
 import { Parallax } from "../components/parallax"
-import { BackgroundBeams } from "../components/beams"
-import { Meteors } from "../components/meteor"
+// import { BackgroundBeams } from "../components/beams"
+// import { Meteors } from "../components/meteor"
+// import { googleFormsToJson } from 'react-google-forms-hooks'
+// import FormfacadeEmbed from "@formfacade/embed-react";
+import axios from "axios";
+
 
 const headStyles = {
   color: "#232129",
@@ -10,7 +14,12 @@ const headStyles = {
   fontFamily: "TheSecret, -apple-system, Roboto, sans-serif, serif",
 }
 
+// const form = await googleFormsToJson(
+//   'https://forms.gle/JXJsAF5zgFVETYe97'
+// )
+
 const IndexPage = () => {
+
   const [isDark, setIsDark] = useState(true)
   const [isAnchorDate, setIsAnchorDate] = useState(false)
   const [countInterval, setCountInterval] = useState(0)
@@ -19,6 +28,11 @@ const IndexPage = () => {
     minutes: null,
     hours: null,
     days: null
+  })
+  const [responseSubmit, setResponseSubmit] = useState({
+    name: '',
+    come: 'yes',
+    wish: ''
   })
   const [pageStyles, setPageStyles] = useState({
     color: "#232129",
@@ -42,9 +56,9 @@ const IndexPage = () => {
 
   const handleScrollDate = () => {
     let dateEl = document.getElementById("date")
-    console.log(window.scrollY, window.screen.availHeight, dateEl.offsetTop)
+    // console.log(window.scrollY, window.screen.availHeight, dateEl.offsetTop)
     if (window.scrollY + window.screen.availHeight >= dateEl.offsetTop) {
-      console.log("anchor")
+      // console.log("anchor")
       setIsAnchorDate(true)
     } else {
       setIsAnchorDate(false)
@@ -92,7 +106,18 @@ const IndexPage = () => {
 
   }
 
+  const submitHandler = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log(responseSubmit)
+    axios.post('https://sheet.best/api/sheets/dc9cd244-df44-4f4d-83ba-9a2fee878154', responseSubmit)
+      .then(response => {
+        console.log("response: ", response);
+      })
+  }
+
   useEffect(() => {
+    // console.log("===> form:", form)
     window.addEventListener("scroll", handleScrollDark);
     window.addEventListener("scroll", handleScrollDate);
     let interval = setInterval(() => {
@@ -116,8 +141,8 @@ const IndexPage = () => {
       </div> */}
       <div className="fixed bottom-5 right-5 " style={{ zIndex: 1000 }} >
         <div className="cursor-pointer bg-pink-50 p-2 rounded-xl drop-shadow-lg tooltip" onClick={() => {
-          var calendarView = document.getElementById("calendar");
-          calendarView.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+          var calendarView = document.getElementById("dateloc");
+          calendarView?.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
         }}>
           <img src="images/calendar.png" className="w-10 h-10 opacity-70" />
           <span class="tooltiptext">Thời gian & Địa điểm</span>
@@ -125,7 +150,7 @@ const IndexPage = () => {
         </div>
         <div className="cursor-pointer bg-pink-50 p-2 rounded-xl drop-shadow-lg mt-3 tooltip" onClick={() => {
           var calendarView = document.getElementById("qr");
-          calendarView.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+          calendarView?.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
         }}>
           <img src="images/money.png" className="w-10 h-10 opacity-70" />
           <span class="tooltiptext">Mừng cưới</span>
@@ -159,14 +184,14 @@ const IndexPage = () => {
         ]} />
         <div id="date" className="static">
           {/* <p>Static parent</p> */}
-          <div className={`pointer-events-none transition-all duration-300 font-hand fixed z-50 text-center inset-x-0 bottom-2 md:top-10 md:right-10 md:text-right text-4xl md:text-5xl${isDark ? ' text-white' : ''}${isAnchorDate ? ' opacity-0' : ' opacity-90'}`}>
+          <div className={`display-n pointer-events-none transition-all duration-300 font-hand fixed z-50 text-center inset-x-0 bottom-2 md:top-10 md:right-10 md:text-right text-4xl md:text-5xl${isDark ? ' text-white' : ''}${isAnchorDate ? ' opacity-0' : ' opacity-0 xs:opacity-90'}`}>
             25/02/2024 (16/01 Âm lịch)
           </div>
           <div id="calendar" >
             <section className="invitation-section section-padding section-bg-img">
               <div className="mx-auto md:w-full lg:w-5/6 2xl:w-2/3">
-                <div className="w-full overflow-hidden 2xl:overflow-visible grid grid-cols-1 gap-0 place-items-center md:grid-cols-2 md:gap-4">
-                  <div className="mx-2 md:mx-0 w-full">
+                <div className="w-full overflow-hidden xl:overflow-visible grid grid-cols-1 gap-0 place-items-center md:grid-cols-2 md:gap-4">
+                  <div id="dateloc" className="mx-2 md:mx-0 w-full">
                     <div className="invitation-box left md:h-[615px]">
                       <div className="left-vec"></div>
                       {/* <div className="right-vec"></div> */}
@@ -188,7 +213,7 @@ const IndexPage = () => {
                           <div>NĂM 2024</div>
                         </div>
                         <i className="text-xs 2xl:text-sm mt-3">(TỨC NGÀY 16 THÁNG 01 NĂM GIÁP THÌN)</i>
-                        <a id="location" href="https://maps.app.goo.gl/MxHNnT7JsGBeEaTS6" target="_blank" className="font-bold mt-5 block underline transition" style={{}}>
+                        <a id="location" href="https://maps.app.goo.gl/MxHNnT7JsGBeEaTS6" target="_blank" className="font-bold mt-5 block underline underline-offset-2 transition" style={{}}>
                           <img src="images/location.gif" className="w-7 h-7 inline mb-2 mr-2 mix-blend-darken	" />
                           NHÀ VĂN HÓA THÔN HẬU BỔNG
                         </a>
@@ -231,18 +256,102 @@ const IndexPage = () => {
             </section>
           </div>
         </div>
-        {/* <BackgroundBeams id={"beam"} /> */}
-        <div style={{ position: "relative" }}>
-          <p style={headStyles}>Nhật Thành - Hoàng Hiên 3</p>
+        <div className="grid grid-cols-1  md:grid-cols-2 gap-10 md:gap-4 py-20 place-items-center mx-auto md:w-full lg:w-5/6 2xl:w-2/3">
+          <div id="qr" className="w-3/4 grid grid-cols-1  place-items-center">
+            <p className="text-center font-bold text-2xl">Mừng hạnh phúc chúng tôi</p>
+            <img src="images/hienqr.jpg" />
+            <div className="grid grid-cols-1 place-content-center">
+              <p className="text-center cursor-pointer" onClick={() => { navigator.clipboard.writeText("HOANG THI HIEN"); }}>
+                HOANG THI HIEN
+              </p>
+              <p className="text-center cursor-pointer" onClick={() => { navigator.clipboard.writeText("9397807961"); }}>
+                9397807961
+              </p>
+              <p className="text-center cursor-pointer" onClick={() => { navigator.clipboard.writeText("Vietcombank PGD Trường Chinh"); }}>
+                Vietcombank PGD Trường Chinh
+              </p>
+            </div>
+          </div>
+          {/* <div id="parent" className="grid grid-cols-2 gap-3 w-3/4">
+            <div>
+              <p className="text-center font-bold text-2xl">
+                Nhà trai
+              </p>
+              <div>
+                <span>Bố: </span>
+                <span>Phạm Trung</span>
+              </div>
+            </div>
+            <div>
+              <p className="text-center font-bold text-2xl">
+                Nhà gái
+              </p>
+              <div>
+                <span>Bố: </span>
+                <span>Phạm Trung</span>
+              </div>
+              <div>
+                <span>Mẹ: </span>
+                <span>Phạm Trung</span>
+              </div>
+            </div>
+          </div> */}
+          {/* <div id="form"> */}
+          {/* <iframe className="w-lvw md:w-[600px] h-[1000px] md:h-[900px]" src="https://docs.google.com/forms/d/e/1FAIpQLSc6nVtKnpD4-52OazeR9OPRNC1E2sIb9lbOU6rSKZvc9TSrgA/viewform?embedded=true" height="900" frameborder="0" marginheight="0" marginwidth="0">Đang tải…</iframe> */}
+          {/* <FormfacadeEmbed
+              className="w-lvw md:w-[600px] h-[1000px] md:h-[900px]"
+              formFacadeURL="https://formfacade.com/include/115214484711546581550/form/1FAIpQLSc6nVtKnpD4-52OazeR9OPRNC1E2sIb9lbOU6rSKZvc9TSrgA/classic.js/?div=ff-compose"
 
-          <p>
-            Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+              onSubmitForm={() => console.log('Form submitted')}
 
-            The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+            /> */}
 
-            The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
-          </p>
+
+          {/* </div> */}
+
+          <form className="grid grid-cols-1 p-5 md:p-0 w-full md:w-3/4 ">
+            <p className="font-hand my-5 text-4xl">Cảm Ơn Bạn Rất Nhiều Vì Đã Gửi Những Lời Chúc Mừng Tốt Đẹp Nhất Đến Đám Cưới Của Chúng Tôi!</p>
+            <div className="grid grid-cols-1 w-full bg-red-50 p-4 rounded-3xl gap-4">
+              <div>
+                <label className="font-semibold" for="name">Tên bạn là gì?</label>
+                <br />
+                <input className="p-2 border rounded-xl w-full my-2" type="text" id="name" name="name" placeholder="Nhập tên của bạn..." value={responseSubmit.name} onChange={(e) => setResponseSubmit({ ...responseSubmit, name: e.target.value })} />
+              </div>
+              <div>
+                <label className="font-semibold" for="come">Bạn có thể tham dự không?</label>
+                <br />
+                <div className="grid grid-cols-1 my-2">
+                  <div>
+                    <input className="mr-1" type="radio" id="yes" name="come" value="yes" onChange={(e) => setResponseSubmit({ ...responseSubmit, come: e.target.value })} />
+                    <label for="yes">Có, tôi chắc chắn sẽ tới</label>
+                  </div>
+
+                  <div>
+                    <input className="mr-1" type="radio" id="notsure" name="come" value="notsure" onChange={(e) => setResponseSubmit({ ...responseSubmit, come: e.target.value })} />
+                    <label for="notsure">Tôi chưa chắc chắn</label>
+                  </div>
+
+                  <div>
+                    <input className="mr-1" type="radio" id="no" name="come" value="no" onChange={(e) => setResponseSubmit({ ...responseSubmit, come: e.target.value })} />
+                    <label for="no">Rất tiếc, tôi không thể tham dự</label>
+                  </div>
+
+                </div>
+              </div>
+              <div>
+                <label className="font-semibold" for="wish">Lời chúc của bạn</label>
+                <br />
+                <textarea rows="4" className="p-2 border rounded-xl w-full my-2" type="text" id="wish" name="wish" placeholder="Hãy nhập lời chúc" value={responseSubmit.wish} onChange={(e) => setResponseSubmit({ ...responseSubmit, wish: e.target.value })} />
+              </div>
+
+              <div className="p-3 rounded-xl bg-red-100 border text-center" onClick={submitHandler}>Gửi lời chúc</div>
+
+            </div>
+          </form>
+
         </div>
+        {/* <BackgroundBeams id={"beam"} /> */}
+
       </div>
 
     </main>

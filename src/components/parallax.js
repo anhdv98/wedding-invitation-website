@@ -102,7 +102,7 @@ export const Header = ({ isAnchorDate, isDark }) => {
       <h1 className="font-sec text-6xl md:text-8xl lg:text-9xl font-bold dark:text-white">
         Nhật Thành <br /> <span style={{ color: "#D63484" }}>&</span> Hoàng Hiên
       </h1>
-      <p className="opacity-75 font-hand text-2xl max-w-5xl md:text-4xl mt-8 dark:text-neutral-200">
+      <p className="opacity-75 font-hand text-3xl max-w-5xl md:text-5xl mt-8 dark:text-neutral-200">
         Bắt đầu từ hôm nay chúng ta sẽ viết nên một chương mới của cuộc đời.<br /> Bằng tình thương yêu và hạnh phúc đong đầy.
       </p>
       {/* <div className="static">
