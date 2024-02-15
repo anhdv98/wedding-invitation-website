@@ -124,16 +124,16 @@ export const ProductCard = ({
   }
   return (
     <motion.div
-      initial={{
-        rotate: 0
-      }}
+      // initial={{
+      //   rotate: 0
+      // }}
       style={{
         x: translate,
       }}
-      whileHover={{
-        y: -20,
-        rotate: randomNumberInRange(-6, 6)
-      }}
+      // whileHover={{
+      //   y: -20,
+      //   rotate: randomNumberInRange(-6, 6)
+      // }}
       key={product.title}
       className="group/product h-96 w-[30rem] relative flex-shrink-0"
     >

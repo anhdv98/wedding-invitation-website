@@ -13,6 +13,13 @@ const headStyles = {
 const IndexPage = () => {
   const [isDark, setIsDark] = useState(true)
   const [isAnchorDate, setIsAnchorDate] = useState(false)
+  const [countInterval, setCountInterval] = useState(0)
+  const [count, setCount] = useState({
+    seconds: null,
+    minutes: null,
+    hours: null,
+    days: null
+  })
   const [pageStyles, setPageStyles] = useState({
     color: "#232129",
     backgroundColor: "#000",
@@ -44,12 +51,58 @@ const IndexPage = () => {
     }
   }
 
+  const updateCount = () => {
+    const date_now = Date.now()
+    const date_future = Date.parse("2024-02-25T08:00:00.000+07:00");
+
+    if (date_future <= date_now) {
+      setCount({
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+        days: 0
+      })
+    } else {
+
+      // get total seconds between the times
+      var delta = Math.abs(date_future - date_now) / 1000;
+
+      // calculate (and subtract) whole days
+      var days = Math.floor(delta / 86400);
+      delta -= days * 86400;
+
+      // calculate (and subtract) whole hours
+      var hours = Math.floor(delta / 3600) % 24;
+      delta -= hours * 3600;
+
+      // calculate (and subtract) whole minutes
+      var minutes = Math.floor(delta / 60) % 60;
+      delta -= minutes * 60;
+
+      // what's left is seconds
+      var seconds = Math.round(delta % 60);  // in theory the modulus is not required
+
+      setCount({
+        seconds: ('0' + seconds || 0).slice(-2),
+        minutes: ('0' + minutes || 0).slice(-2),
+        hours: ('0' + hours || 0).slice(-2),
+        days: ('0' + days || 0).slice(-2),
+      })
+    }
+
+  }
+
   useEffect(() => {
     window.addEventListener("scroll", handleScrollDark);
     window.addEventListener("scroll", handleScrollDate);
+    let interval = setInterval(() => {
+      updateCount()
+    }, 1000);
+    setCountInterval(interval)
     return () => {
       window.removeEventListener("scroll", handleScrollDark);
       window.removeEventListener("scroll", handleScrollDate);
+      clearInterval(countInterval)
     }
   }, [])
 
@@ -61,6 +114,26 @@ const IndexPage = () => {
           25/02/2024
         </div>
       </div> */}
+      <div className="fixed bottom-5 right-5 " style={{ zIndex: 1000 }} >
+        <div className="cursor-pointer bg-pink-50 p-2 rounded-xl drop-shadow-lg tooltip" onClick={() => {
+          var calendarView = document.getElementById("calendar");
+          calendarView.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+        }}>
+          <img src="images/calendar.png" className="w-10 h-10 opacity-70" />
+          <span class="tooltiptext">Thời gian & Địa điểm</span>
+
+        </div>
+        <div className="cursor-pointer bg-pink-50 p-2 rounded-xl drop-shadow-lg mt-3 tooltip" onClick={() => {
+          var calendarView = document.getElementById("qr");
+          calendarView.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+        }}>
+          <img src="images/money.png" className="w-10 h-10 opacity-70" />
+          <span class="tooltiptext">Mừng cưới</span>
+        </div>
+      </div>
+
+
+
       <div
       //  className="px-0 lg:px-20"
       >
@@ -91,22 +164,36 @@ const IndexPage = () => {
           </div>
           <div id="calendar" >
             <section className="invitation-section section-padding section-bg-img">
-              <div className="mx-auto w-full xl:w-2/3">
-                <div className="w-full overflow-hidden xl:overflow-visible grid grid-cols-1 gap-0 place-items-center md:grid-cols-2 md:gap-4">
-                  <div className="mx-2 xl:mx-0 w-full">
+              <div className="mx-auto md:w-full lg:w-5/6 2xl:w-2/3">
+                <div className="w-full overflow-hidden 2xl:overflow-visible grid grid-cols-1 gap-0 place-items-center md:grid-cols-2 md:gap-4">
+                  <div className="mx-2 md:mx-0 w-full">
                     <div className="invitation-box left md:h-[615px]">
                       <div className="left-vec"></div>
                       {/* <div className="right-vec"></div> */}
                       <div className="inner">
-                        <p className="text-3xl md:text-4xl lg:text-5xl header">Save the Date</p>
+                        <p className="text-5xl 2xl:text-6xl mb-0 font-hand header">Save the Date</p>
                         <spam className="block">For the wedding of</spam>
-                        <div className="flex justify-center items-center my-3 mb-4">
-                          <span className="font-sec text-3xl md:text-4xl">Nhật Thành</span>
-                          <img src="images/heart.png" className="w-7 h-7 inline mx-1" />
-                          <span className="font-sec text-3xl md:text-4xl">Hoàng Hiên</span>
+                        <div className="flex flex-col justify-center items-center mt-8 mb-8">
+                          <span className="font-sec text-3xl md:text-4xl">Phạm Nhật Thành</span>
+                          <img src="images/heart.gif" className="w-7 h-7 inline mx-1 opacity-60" />
+                          <span className="font-sec text-3xl md:text-4xl">Hoàng Thị Hiên</span>
                         </div>
-                        <p>Hôn lễ được tổ chức tại gia đình nhà trai </p>
-                        <a href="#wishes" className="theme-btn">Gửi lời chúc</a>
+                        <p>Hôn lễ được tổ chức vào hồi <span className="font-bold text-xl">08</span> giờ <span className="font-bold text-xl">00</span> </p>
+                        <div className="flex justify-evenly items-center grid-cols-3" style={{ color: "rgb(200, 157, 156)" }}>
+                          <div>CHỦ NHẬT</div>
+                          <div className="flex flex-col border-l-2 border-r-2 py-2 px-5 2xl:px-10">
+                            <div className="text-3xl">25</div>
+                            <div className="text-xs">THÁNG 02</div>
+                          </div>
+                          <div>NĂM 2024</div>
+                        </div>
+                        <i className="text-xs 2xl:text-sm mt-3">(TỨC NGÀY 16 THÁNG 01 NĂM GIÁP THÌN)</i>
+                        <a id="location" href="https://maps.app.goo.gl/MxHNnT7JsGBeEaTS6" target="_blank" className="font-bold mt-5 block underline transition" style={{}}>
+                          <img src="images/location.gif" className="w-7 h-7 inline mb-2 mr-2 mix-blend-darken	" />
+                          NHÀ VĂN HÓA THÔN HẬU BỔNG
+                        </a>
+
+                        {/* <a href="#wishes" className="theme-btn">Gửi lời chúc</a> */}
                       </div>
                     </div>
                   </div>
@@ -129,7 +216,13 @@ const IndexPage = () => {
 
                       </div>
                       <div className="count-down-clock">
-                        <div id="clock" data-date="2024-02-25" data-text-day="Ngày" data-text-hour="Giờ" data-text-minute="Phút" data-text-second="Giây"><div class="box"><div>25</div> <span>Ngày</span> </div><div class="box"><div>08</div> <span>Giờ</span> </div><div class="box"><div>0</div> <span>Phút</span> </div><div class="box"><div>0</div> <span>Giây</span> </div></div>
+                        {
+                          (Number.parseInt(count.seconds) + Number.parseInt(count.minutes) + Number.parseInt(count.hours) + Number.parseInt(count.days) > 0) ? (
+                            <div id="clock" data-date="2024-02-25" data-text-day="Ngày" data-text-hour="Giờ" data-text-minute="Phút" data-text-second="Giây"><div class="box"><div className="font-sec font-bold text-6xl">{count.days}</div> <span className="text-sm">Ngày</span> </div><div class="box"><div className="font-sec  font-bold text-6xl">{count.hours}</div> <span className="text-sm">Giờ</span> </div><div class="box"><div className="font-sec  font-bold text-6xl">{count.minutes}</div> <span className="text-sm">Phút</span> </div><div class="box"><div className="font-sec  font-bold text-6xl">{count.seconds}</div> <span className="text-sm">Giây</span> </div></div>
+                          ) : (
+                            <div id="clock" style={{ color: "rgb(200, 157, 156)" }} className="text-5xl 2xl:text-6xl font-sec mt-9">Lễ cưới đã diễn ra</div>
+                          )
+                        }
                       </div>
                     </div>
                   </div>
