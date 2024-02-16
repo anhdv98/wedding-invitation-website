@@ -177,7 +177,7 @@ const IndexPage = () => {
         <div className="cursor-pointer bg-pink-50 p-2 rounded-xl drop-shadow-lg" onClick={() => { toggleMusic() }}>
           <img src={musicState ? "images/music.png" : "images/musicpause.png"} className="w-10 h-10 opacity-55" />
           <audio id="backgroundMusic" loop autoPlay>
-            <source src="audios/theme.weba" type="audio/webm" />
+            <source src="audios/theme.mp3" type="audio/mpeg" />
           </audio>
         </div>
         <div className="cursor-pointer bg-pink-50 p-2 rounded-xl drop-shadow-lg  mt-3 tooltip" onClick={() => {
