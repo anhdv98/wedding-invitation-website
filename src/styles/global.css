@@ -318,3 +318,53 @@ a#location:hover {
   min-height: 900px;
   position: relative;
 }
+
+/* HEART FALL */
+
+.heart {
+  position: absolute;
+  color: red; /* Màu của trái tim */
+  /* max-width: 2vw; */
+  animation: fall 50s linear infinite;
+  z-index: 9999999;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(-100vh);
+  }
+
+  100% {
+    transform: translateY(450vh);
+  }
+}
+
+.Snowflake {
+	display: inline-block;
+	width: 8%;
+	color: #FFFAFA;
+	opacity: 0;
+	font-size: 120px;
+	margin: 0;
+	padding: 0;
+	animation: falls 5s linear infinite;
+  position: absolute;
+  z-index: 999999;
+}
+
+@keyframes falls {
+	0% {
+		opacity: 0;
+	}
+	3% {
+		opacity: 0.9;
+	}
+
+	90% {
+		opacity: 0.9;
+	}
+	100% {
+		transform: translate(0, 97vh);
+		opacity: 1;
+	}
+}

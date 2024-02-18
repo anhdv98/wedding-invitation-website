@@ -9,11 +9,7 @@ import {
 // import Image from "next/image";
 // import Link from "next/link";
 
-export const Parallax = ({
-  products,
-  isAnchorDate,
-  isDark
-}) => {
+export const Parallax = ({ products, isAnchorDate, isDark }) => {
   const firstRow = products.slice(0, 5);
   const secondRow = products.slice(5, 10);
   const thirdRow = products.slice(10, 15);
@@ -98,12 +94,16 @@ export const Parallax = ({
 
 export const Header = ({ isAnchorDate, isDark }) => {
   return (
-    <div id="hero" className="max-w-7xl relative mx-auto py-20 md:py-20 px-4 w-full  left-0 top-0">
+    <div
+      id="hero"
+      className="max-w-7xl relative mx-auto py-20 md:py-20 px-4 w-full  left-0 top-0"
+    >
       <h1 className="font-sec text-6xl md:text-8xl lg:text-9xl font-bold dark:text-white">
-        Nhật Thành <br /> <span style={{ color: "#D63484" }}>&</span> Hoàng Hiên
+        Lê Minh <br /> <span style={{ color: "#D63484" }}>&</span> Hồng Anh
       </h1>
       <p className="opacity-75 font-hand text-3xl max-w-5xl md:text-5xl mt-8 dark:text-neutral-200">
-        Bắt đầu từ hôm nay chúng ta sẽ viết nên một chương mới của cuộc đời.<br /> Bằng tình thương yêu và hạnh phúc đong đầy.
+        Bắt đầu từ hôm nay chúng ta sẽ viết nên một chương mới của cuộc đời.
+        <br /> Bằng tình thương yêu và hạnh phúc đong đầy.
       </p>
       {/* <div className="static">
         <div className={`transition-all mt-20 pt-20 duration-300 font-hand z-50 text-center inset-x-0 bottom-2 md:bottom-20 text-4xl md:text-5xl${isDark ? ' text-white' : ''}${isAnchorDate ? ' opacity-0' : ' opacity-90'}`}>
@@ -114,10 +114,7 @@ export const Header = ({ isAnchorDate, isDark }) => {
   );
 };
 
-export const ProductCard = ({
-  product,
-  translate,
-}) => {
+export const ProductCard = ({ product, translate }) => {
   function randomNumberInRange(min, max) {
     // 👇️ get number between min (inclusive) and max (inclusive)
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -137,10 +134,7 @@ export const ProductCard = ({
       key={product.title}
       className="group/product h-96 w-[30rem] relative flex-shrink-0"
     >
-      <a
-        href={product.link}
-        className="block group-hover/product:shadow-2xl "
-      >
+      <a href={product.link} className="block group-hover/product:shadow-2xl ">
         <img
           src={product.thumbnail}
           height="600"
